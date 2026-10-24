@@ -1,7 +1,7 @@
 ## 安装
 
 1. 下载下方 Assets 中的 `VRCLearnLauncher-win-x64-Setup.exe`。
-2. 双击运行安装程序，按提示完成安装。默认安装到 `%LocalAppData%\Programs\VRCLearnLauncher`，不需要管理员权限。
+2. 双击运行安装程序，按提示完成安装。
 
 ## 系统要求
 
@@ -27,7 +27,7 @@ Get-FileHash .\VRCLearnLauncher-win-x64-Setup.exe -Algorithm SHA256
 ## Install
 
 1. Download `VRCLearnLauncher-win-x64-Setup.exe` from the Assets below.
-2. Run the setup and follow the wizard. It installs per user to `%LocalAppData%\Programs\VRCLearnLauncher` and does not require administrator rights.
+2. Run the setup and follow the wizard.
 
 ## Requirements
 

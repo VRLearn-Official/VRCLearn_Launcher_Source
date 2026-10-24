@@ -38,7 +38,6 @@ VRCLearn Launcher manages VPM repositories, packages and Unity projects in one p
 Download `VRCLearnLauncher-win-x64-Setup.exe` from [Releases](https://github.com/VRLearn-Official/VRCLearn_Launcher/releases) and run it.
 
 - Windows 10 or later, x64
-- Installs per user to `%LocalAppData%\Programs\VRCLearnLauncher`; no administrator rights required
 - The .NET 8 desktop runtime is bundled; no separate installation is required
 
 The installer is not code-signed yet, so Windows SmartScreen may warn on first run. Choose "More info" and then "Run anyway".
