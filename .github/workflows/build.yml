@@ -165,14 +165,23 @@ jobs:
           RELEASE_TAG: ${{ github.ref_name }}
         run: |
           $tag = $env:RELEASE_TAG
+          $repo = $env:GITHUB_REPOSITORY
           $exe = Join-Path $env:GITHUB_WORKSPACE "release-assets/$($env:SETUP_ASSET)"
           $shaFile = "$exe.sha256"
           $notes = Join-Path $env:GITHUB_WORKSPACE ".github/release-notes.md"
 
-          $releaseJson = gh api "repos/$env:GITHUB_REPOSITORY/releases/tags/$tag" 2>$null
-          $exists = $LASTEXITCODE -eq 0
+          $releasesJson = gh api "repos/$repo/releases?per_page=100"
 
-          if (-not $exists) {
+          if ($LASTEXITCODE -ne 0) {
+            throw "gh api releases failed ($LASTEXITCODE)."
+          }
+
+          $release = @($releasesJson | ConvertFrom-Json) |
+            Where-Object { $_.tag_name -eq $tag } |
+            Sort-Object created_at -Descending |
+            Select-Object -First 1
+
+          if (-not $release) {
             gh release create $tag $exe $shaFile `
               --draft `
               --verify-tag `
@@ -186,22 +195,39 @@ jobs:
             Write-Host "Created draft release $tag."
           }
           else {
-            $release = $releaseJson | ConvertFrom-Json
-
             if (-not $release.draft) {
               throw "Release $tag is already published; bump the version and tag a new release instead."
             }
 
-            gh release upload $tag $exe $shaFile --clobber
+            foreach ($asset in @($release.assets)) {
+              if (-not $asset) {
+                continue
+              }
 
-            if ($LASTEXITCODE -ne 0) {
-              throw "gh release upload failed ($LASTEXITCODE)."
+              if ($asset.name -in @($env:SETUP_ASSET, "$($env:SETUP_ASSET).sha256")) {
+                gh api -X DELETE "repos/$repo/releases/assets/$($asset.id)"
+
+                if ($LASTEXITCODE -ne 0) {
+                  throw "Deleting asset $($asset.name) failed ($LASTEXITCODE)."
+                }
+              }
+            }
+
+            foreach ($file in @($exe, $shaFile)) {
+              $assetName = Split-Path -Leaf $file
+              $uploadUri = "https://uploads.github.com/repos/$repo/releases/$($release.id)/assets?name=$assetName"
+
+              Invoke-RestMethod -Uri $uploadUri `
+                -Method Post `
+                -Headers @{ Authorization = "Bearer $env:GH_TOKEN" } `
+                -ContentType "application/octet-stream" `
+                -InFile $file | Out-Null
             }
 
             if ([string]::IsNullOrWhiteSpace($release.body)) {
               $bodyText = [System.IO.File]::ReadAllText($notes)
-              $payload = @{ body = $bodyText } | ConvertTo-Json -Compress
-              $payload | gh api -X PATCH "repos/$env:GITHUB_REPOSITORY/releases/$($release.id)" --input -
+              $payload = @{ tag_name = $tag; body = $bodyText } | ConvertTo-Json -Compress
+              $payload | gh api -X PATCH "repos/$repo/releases/$($release.id)" --input -
 
               if ($LASTEXITCODE -ne 0) {
                 throw "gh api release update failed ($LASTEXITCODE)."
@@ -216,18 +242,34 @@ jobs:
         env:
           RELEASE_TAG: ${{ github.ref_name }}
         run: |
-          $release = gh api "repos/$env:GITHUB_REPOSITORY/releases/tags/$($env:RELEASE_TAG)" | ConvertFrom-Json
+          $tag = $env:RELEASE_TAG
+          $repo = $env:GITHUB_REPOSITORY
+
+          $releasesJson = gh api "repos/$repo/releases?per_page=100"
+
+          if ($LASTEXITCODE -ne 0) {
+            throw "gh api releases failed ($LASTEXITCODE)."
+          }
+
+          $release = @($releasesJson | ConvertFrom-Json) |
+            Where-Object { $_.tag_name -eq $tag } |
+            Sort-Object created_at -Descending |
+            Select-Object -First 1
+
+          if (-not $release) {
+            throw "Release $tag was not found."
+          }
 
           if (-not $release.draft) {
-            throw "Release $($env:RELEASE_TAG) is no longer a draft."
+            throw "Release $tag is no longer a draft."
           }
 
           $names = @($release.assets | ForEach-Object { $_.name })
 
           foreach ($expected in @($env:SETUP_ASSET, "$($env:SETUP_ASSET).sha256")) {
             if ($names -notcontains $expected) {
-              throw "Release $($env:RELEASE_TAG) is missing asset $expected. Found: $($names -join ', ')"
+              throw "Release $tag is missing asset $expected. Found: $($names -join ', ')"
             }
           }
 
-          "### Draft release created`n`nhttps://github.com/$env:GITHUB_REPOSITORY/releases/tag/$($env:RELEASE_TAG)" >> $env:GITHUB_STEP_SUMMARY
+          "### Draft release ready`n`n$($release.html_url)" >> $env:GITHUB_STEP_SUMMARY
