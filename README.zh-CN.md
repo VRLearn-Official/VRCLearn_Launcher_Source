@@ -1,12 +1,26 @@
-# VRCLearn Launcher
+<div align="center">
+  <img src="docs/images/logo.png" alt="VRCLearn Launcher" width="120">
+  <h1>VRCLearn Launcher</h1>
+  <p>Windows 上的 VRChat 包与项目管理器，基于 .NET 8 与 WPF 构建。</p>
 
-[![Build](https://github.com/VRLearn-Official/VRCLearn_Launcher/actions/workflows/build.yml/badge.svg)](https://github.com/VRLearn-Official/VRCLearn_Launcher/actions/workflows/build.yml)
+  [下载](https://github.com/VRLearn-Official/VRCLearn_Launcher/releases) · [English](README.md) · [问题反馈](https://github.com/VRLearn-Official/VRCLearn_Launcher/issues)
+</div>
 
-[English](README.md) | **简体中文**
-
-Windows 上的 VRChat 包与项目管理器，基于 .NET 8 与 WPF 构建。
+<p align="center">
+  <a href="https://github.com/VRLearn-Official/VRCLearn_Launcher/actions/workflows/build.yml"><img src="https://github.com/VRLearn-Official/VRCLearn_Launcher/actions/workflows/build.yml/badge.svg" alt="Build"></a>
+  <a href="https://github.com/VRLearn-Official/VRCLearn_Launcher/releases"><img src="https://img.shields.io/github/v/release/VRLearn-Official/VRCLearn_Launcher?display_name=tag&sort=semver" alt="Release"></a>
+  <img src="https://img.shields.io/badge/platform-Windows%2010%2B%20x64-0078D4" alt="Platform">
+  <a href="LICENSE"><img src="https://img.shields.io/github/license/VRLearn-Official/VRCLearn_Launcher" alt="License"></a>
+</p>
 
 VRCLearn Launcher 把 VPM 仓库、包与 Unity 项目集中在一处管理。本项目为独立实现，与 VRChat Inc.、Unity Technologies 无隶属关系。
+
+## 截图
+
+<p align="center">
+  <img src="docs/images/projects-zh.png" alt="项目">
+  <img src="docs/images/detail-zh.png" alt="项目详情">
+</p>
 
 ## 功能
 
@@ -18,17 +32,17 @@ VRCLearn Launcher 把 VPM 仓库、包与 Unity 项目集中在一处管理。�
 - **工具**：环境检测、Unity Hub / 编辑器下载、可选关闭 Unity Hub 自动更新
 - **桌面集成**：`vcc://` 深链与文件关联
 - **检查更新**：启动时读取 `version.txt`，有新版本时打开下载页
-- **本地化**：简体中文与英文
+- **本地化**：简体中文与英文，支持自定义
 
-## 项目结构
+## 安装
 
-| 路径 | 内容 |
-|---|---|
-| `src/VRCLearn.App` | WPF 界面、视图模型、本地化、主题 |
-| `src/VRCLearn.Core` | 与平台无关的逻辑，只依赖 BCL |
-| `src/VRCLearn.Infrastructure` | Windows API、文件系统、HTTP、存储 |
+从 [Releases](https://github.com/VRLearn-Official/VRCLearn_Launcher/releases) 下载 `VRCLearnLauncher-win-x64-Setup.exe` 并运行。
 
-依赖方向：`App` → `Infrastructure` → `Core`。
+- Windows 10 或更高版本，x64
+- 按用户安装到 `%LocalAppData%\Programs\VRCLearnLauncher`，不需要管理员权限
+- 安装包已内置 .NET 8 桌面运行时，无需单独安装
+
+安装包暂未签名，首次运行时 Windows SmartScreen 可能提示；选择「更多信息」→「仍要运行」。
 
 ## 构建
 
@@ -54,10 +68,30 @@ dotnet run --project src/VRCLearn.App/VRCLearn.App.csproj
 
 GitHub Actions 会在每次推送到 `main` 以及打 `v*` 标签时构建安装包，Setup 可执行文件作为每次运行的 artifact 提供下载。推送 `v*` 标签时还会创建草稿 GitHub Release，附上 Setup 安装包和 SHA256 校验文件。
 
+## 项目结构
+
+| 路径 | 内容 |
+|---|---|
+| `src/VRCLearn.App` | WPF 界面、视图模型、本地化、主题 |
+| `src/VRCLearn.Core` | 与平台无关的逻辑，只依赖 BCL |
+| `src/VRCLearn.Infrastructure` | Windows API、文件系统、HTTP、存储 |
+
+依赖方向：`App` → `Infrastructure` → `Core`。
+
 ## 数据目录
 
 默认与 VRChat Creator Companion 共用 `%LocalAppData%\VRChatCreatorCompanion`；启动器自己的数据位于其下的 `vrclearn\`。
 
 ## 许可
 
-[MIT](LICENSE)
+[MIT](LICENSE)。第三方组件见 [THIRD-PARTY-NOTICES.txt](THIRD-PARTY-NOTICES.txt)。
+
+## Star History
+
+<a href="https://www.star-history.com/?repos=vrlearn-official%2Fvrclearn_launcher&type=date&legend=top-left">
+ <picture>
+   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/chart?repos=vrlearn-official/vrclearn_launcher&type=date&theme=dark&legend=top-left" />
+   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/chart?repos=vrlearn-official/vrclearn_launcher&type=date&legend=top-left" />
+   <img alt="Star History Chart" src="https://api.star-history.com/chart?repos=vrlearn-official/vrclearn_launcher&type=date&legend=top-left" />
+ </picture>
+</a>
