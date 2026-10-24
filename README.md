@@ -18,8 +18,7 @@ VRCLearn Launcher manages VPM repositories, packages and Unity projects in one p
 ## Screenshots
 
 <p align="center">
-  <img src="docs/images/projects-en.png" alt="Projects">
-  <img src="docs/images/detail-en.png" alt="Project detail">
+  <img src="docs/images/screenshots-en.png" alt="Projects and project detail">
 </p>
 
 ## Features

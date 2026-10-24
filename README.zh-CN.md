@@ -18,8 +18,7 @@ VRCLearn Launcher 把 VPM 仓库、包与 Unity 项目集中在一处管理。�
 ## 截图
 
 <p align="center">
-  <img src="docs/images/projects-zh.png" alt="项目">
-  <img src="docs/images/detail-zh.png" alt="项目详情">
+  <img src="docs/images/screenshots-zh.png" alt="项目与项目详情">
 </p>
 
 ## 功能
