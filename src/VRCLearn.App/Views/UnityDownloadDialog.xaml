@@ -1,0 +1,71 @@
+<views:DialogWindowBase
+    x:Class="VRCLearn.App.Views.UnityDownloadDialog"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+    xmlns:views="clr-namespace:VRCLearn.App.Views"
+    Width="480"
+    WindowStartupLocation="CenterOwner"
+    Style="{StaticResource DialogWindow}">
+
+    <views:DialogChrome Style="{StaticResource DialogChromeStyle}" ShowTitle="False">
+
+        <StackPanel Margin="20,0,20,16">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <ui:SymbolIcon
+                    Grid.Column="0"
+                    Margin="0,2,12,0"
+                    VerticalAlignment="Top"
+                    FontSize="24"
+                    Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}"
+                    Symbol="ArrowDownload24" />
+
+                <StackPanel Grid.Column="1">
+                    <TextBlock
+                        x:Name="TitleText"
+                        FontSize="{StaticResource FontSize.Section}"
+                        FontWeight="SemiBold"
+                        TextWrapping="Wrap" />
+                    <TextBlock
+                        x:Name="MessageText"
+                        Margin="{StaticResource Gap.Small}"
+                        FontSize="{StaticResource FontSize.Body}"
+                        Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                        TextWrapping="Wrap" />
+                    <ProgressBar
+                        x:Name="CheckingBar"
+                        Height="4"
+                        Margin="{StaticResource Gap.Row}"
+                        IsIndeterminate="True"
+                        Maximum="100" />
+                </StackPanel>
+            </Grid>
+
+            <StackPanel Style="{StaticResource DialogRow}">
+                <ui:Button
+                    x:Name="OfficialButton"
+                    Click="OnOfficialClick"
+                    Visibility="Collapsed"
+                    Style="{StaticResource DialogButton}" />
+                <ui:Button
+                    x:Name="ProxyButton"
+                    Margin="{StaticResource Gap.Inline}"
+                    Click="OnProxyClick"
+                    Visibility="Collapsed"
+                    Style="{StaticResource DialogButton}" />
+                <ui:Button
+                    x:Name="ContinueButton"
+                    Margin="{StaticResource Gap.Inline}"
+                    Appearance="Primary"
+                    Click="OnContinueClick"
+                    Visibility="Collapsed"
+                    Style="{StaticResource DialogButton}" />
+            </StackPanel>
+        </StackPanel>
+    </views:DialogChrome>
+</views:DialogWindowBase>

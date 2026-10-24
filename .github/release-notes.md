@@ -1,0 +1,36 @@
+## 安装 / Install
+
+1. 下载下方 Assets 中的 `VRCLearnLauncher-win-x64-Setup.exe`。
+2. 双击运行安装程序，按提示完成安装。默认安装到 `%LocalAppData%\Programs\VRCLearnLauncher`，不需要管理员权限。
+
+1. Download `VRCLearnLauncher-win-x64-Setup.exe` from the Assets below.
+2. Run the setup and follow the wizard. It installs per user to `%LocalAppData%\Programs\VRCLearnLauncher` and does not require administrator rights.
+
+## 系统要求 / Requirements
+
+- Windows 10 or later, x64
+- 安装包已内置 .NET 8 运行时，无需单独安装 / The .NET 8 runtime is bundled; no separate installation is required
+
+## 校验 / Verify
+
+The release includes `VRCLearnLauncher-win-x64-Setup.exe.sha256`.
+
+```powershell
+Get-FileHash .\VRCLearnLauncher-win-x64-Setup.exe -Algorithm SHA256
+```
+
+Or in Git Bash, WSL, Linux or macOS:
+
+```bash
+sha256sum -c VRCLearnLauncher-win-x64-Setup.exe.sha256
+```
+
+## 本次更新 / What's new
+
+<!-- 发布前请在这里补充本次更新内容 / Add release highlights here before publishing. -->
+
+---
+
+安装包暂未签名，首次运行时 Windows SmartScreen 可能提示；选择「更多信息」→「仍要运行」。
+
+The installer is not code-signed yet, so Windows SmartScreen may warn on first run. Choose "More info" and then "Run anyway".
